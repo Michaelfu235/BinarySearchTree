@@ -1,0 +1,73 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+using namespace std;
+
+class Node {
+public:
+  int data;
+  Node* left;
+  Node* right;
+
+  Node(int newData){
+    data = newData;
+    left = NULL;
+    right = NULL;
+  }
+};
+
+
+
+
+int main(){
+  cout << "hi" << endl;
+}
+
+
+void add(Node* tree, int data){
+  if(tree->data == -1){
+    tree->data = data;
+    return;
+  } else {
+    if(data < tree->data && tree->left){
+      tree = tree->left;
+      add(tree, data);
+    } else if (data < tree->data && !tree->left){
+      Node* newNode = new Node(data);
+      tree->left = newNode;
+      return;
+    }
+
+    if(data > tree->data && tree->right){
+      tree = tree->right;
+      add(tree, data);
+    } else if (data > tree->data && !tree->right){
+      Node* newNode = new Node(data);
+      tree->right = newNode;
+      return;
+    }
+    
+  }
+}
+
+
+void printTree(Node* tree, int depth){
+  if(!tree && tree->data==-1){
+    cout << "tree is empty" << endl;
+    return;
+    
+  }
+  if(tree->right){
+    printTree(tree->right, depth+1);
+  }
+  for(int i = 0;i<depth-1;i++){
+    cout << "\t";
+  }
+  cout << tree->data << endl;
+  if(tree->left){
+    printTree(tree->right, depth+1);
+  }
+  
+  
+}
