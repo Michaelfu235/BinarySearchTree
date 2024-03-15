@@ -22,6 +22,9 @@ public:
 void add(Node* tree, int data);
 void printTree(Node* tree, int depth, int fromwhere);
 int search(Node* tree, int searchNum);
+Node* deleteNode(Node* tree, int deleteNum);
+Node* nextValue(Node* tree);
+
 
 int main(){
   Node* treeHead = new Node(-1);
@@ -48,6 +51,19 @@ int main(){
   
   printTree(treeHead, 0, 0);
 
+  deleteNode(treeHead, 14);
+  cout << "------------------------------------------------" << endl;
+  printTree(treeHead, 0, 0);
+  deleteNode(treeHead, 11);
+
+  cout << "------------------------------------------------------------------------" << endl;
+
+  printTree(treeHead, 0,0);
+  deleteNode(treeHead, 9);
+  
+  cout << "-------------------------------------------------------" << endl;
+
+  printTree(treeHead, 0, 0);
   
   //  cout << "hi" << endl;
 }
@@ -154,3 +170,38 @@ int search(Node* tree, int searchNum){
   
 }
 
+Node* deleteNode(Node* tree, int deleteNum){
+  if(tree==NULL){
+    return NULL;
+  }
+  if(tree->data < deleteNum){
+    tree->right = deleteNode(tree->right, deleteNum);
+  } else if (tree->data > deleteNum){
+    tree->left = deleteNode(tree->left, deleteNum);
+  } else if (tree->data == deleteNum){
+    if(tree->left == NULL && tree->right == NULL){
+      return NULL;
+    } else if (tree->left != NULL && tree->right == NULL){
+      Node* temp = tree->left;
+      delete tree;
+      return temp;
+    } else if (tree->right != NULL && tree->left == NULL){
+      Node* temp = tree->right;
+      delete tree;
+      return temp;
+    }
+    Node* temp = nextValue(tree->right);
+    tree->data = temp->data;
+    tree->right = deleteNode(tree->right, temp->data);
+  }
+  return tree;
+  
+}
+
+Node* nextValue(Node* tree){
+  Node* current = tree;
+  while(current != NULL && current->left != NULL){
+    current = current->left;
+  }
+  return current;
+}
