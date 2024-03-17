@@ -24,11 +24,72 @@ void printTree(Node* tree, int depth, int fromwhere);
 int search(Node* tree, int searchNum);
 Node* deleteNode(Node* tree, int deleteNum);
 Node* nextValue(Node* tree);
+void addByFile(Node* &tree);
 
 
 int main(){
   Node* treeHead = new Node(-1);
-  add(treeHead, 5);
+
+  char inputt[15];
+  
+
+  bool justKeepGoing = true;
+  while(justKeepGoing == true){
+    cout << "Enter a command (ADD, SEARCH, DELETE, PRINT, or QUIT): " << endl;
+    cin >> inputt;
+
+    if(strcmp(inputt, "ADD") == 0){
+      cout << "input type? (FILE or CONSOLE)" << endl;
+      cin >> inputt;
+      if(strcmp(inputt, "FILE")==0){
+	addByFile(treeHead);
+      } else if (strcmp(inputt, "CONSOLE")==0){
+	bool justKeepGoingtwo = true;
+	char input[10];
+
+	while(justKeepGoingtwo){
+	  cout << "enter numbers from 1-999, or \"DONE\" when done" << endl;
+
+	  cin >> input;
+	  if(strcmp(input, "DONE")==0){
+	    justKeepGoingtwo = false;
+	  } else {
+	    int num = atoi(input);
+	    add(treeHead, num);
+	  }
+	}
+      }
+    } else if (strcmp(inputt, "SEARCH")==0){
+      cout << "what number do you want to find?" << endl;
+      int numby;
+      cin >> numby;
+      int numbytwo = search(treeHead, numby);
+      if(numbytwo == numby){
+	cout << numby << " exits in the tree" << endl;
+      } else {
+	cout << numby << " does not exist in the tree" << endl;
+      }
+    } else if (strcmp(inputt, "DELETE")==0){
+      cout << "what number do you want to delete?" << endl;
+      int numby;
+      cin >> numby;
+      int numbytwo = search(treeHead, numby);
+      if(numbytwo==numby){
+	deleteNode(treeHead, numby);
+      } else {
+	cout << numby << " does not exist" << endl;
+      }
+    } else if (strcmp(inputt, "PRINT")==0){
+      printTree(treeHead, 0, 0);
+    } else if (strcmp(inputt, "QUIT")==0){
+      justKeepGoing = false;
+    }
+
+    
+  }
+  return 0;
+
+  /*add(treeHead, 5);
   add(treeHead, 3);
   add(treeHead, 15);
   add(treeHead, 9);
@@ -65,7 +126,7 @@ int main(){
 
   printTree(treeHead, 0, 0);
   
-  //  cout << "hi" << endl;
+  //  cout << "hi" << endl;*/
 }
 
 
@@ -204,4 +265,22 @@ Node* nextValue(Node* tree){
     current = current->left;
   }
   return current;
+}
+
+
+
+void addByFile(Node* &tree){
+  char* fileName = new char[80];
+
+  cout << "what's the name of the file you want to add (including .txt)" << endl;
+  cin >> fileName;
+  cin.ignore();
+  fstream file;
+  file.open(fileName);
+
+  int input = 0;
+  while(file >> input){
+    add(tree, input);
+  }
+  file.close();
 }
